@@ -1,0 +1,401 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Lora:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+
+.dashboard-page {
+  --flag-green: #009c3b;
+  --flag-yellow: #ffdf00;
+  --flag-blue: #002776;
+  --ink: #1f2d14;
+  --ink-soft: #4d6136;
+  --border: rgba(88, 123, 47, 0.25);
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-strong: rgba(248, 246, 234, 0.98);
+  --bg: #f5f2e5;
+  --card: rgba(255, 255, 255, 0.95);
+  --border-light: rgba(136, 157, 92, 0.22);
+  --ink-2: #27361a;
+  --ink-3: #607246;
+  --ink-4: #7d8d62;
+  --green-deep: #11b15a;
+  --green-mid: #2fcd76;
+  --green-light: #6fdf9b;
+  --orange: #f1a14d;
+  --blue: #4f82ff;
+  --amber: #ffd05c;
+  --teal: #3dc89c;
+  --plum: #a0a4ff;
+
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding: 2rem clamp(1rem, 2.8vw, 3rem) 3rem;
+  color: var(--ink);
+  font-family: "Source Sans 3", sans-serif;
+  background:
+    radial-gradient(circle at 12% 14%, rgba(255, 223, 0, 0.3), transparent 32%),
+    radial-gradient(circle at 82% 4%, rgba(0, 39, 118, 0.14), transparent 36%),
+    linear-gradient(140deg, #f8f4e7 0%, #f3efdf 45%, #ece9d7 100%);
+}
+
+.dashboard-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(transparent 96%, rgba(255, 255, 255, 0.06) 100%),
+    radial-gradient(rgba(255, 255, 255, 0.14) 0.7px, transparent 0.7px);
+  background-size: 100% 3px, 3px 3px;
+}
+
+.dashboard-glow {
+  position: absolute;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.dashboard-glow-left {
+  width: clamp(220px, 34vw, 360px);
+  height: clamp(220px, 34vw, 360px);
+  border-radius: 999px;
+  background: rgba(0, 156, 59, 0.22);
+  left: -120px;
+  top: 46%;
+}
+
+.dashboard-glow-right {
+  width: clamp(200px, 32vw, 340px);
+  height: clamp(200px, 32vw, 340px);
+  border-radius: 999px;
+  background: rgba(0, 39, 118, 0.2);
+  right: -100px;
+  top: 8%;
+}
+
+.dashboard-topbar,
+.dashboard-intro,
+.year-control,
+.dash-rule,
+.section-grid-two,
+.section-grid-wide,
+.section-fade {
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.dashboard-brand {
+  margin: 0;
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.dashboard-title {
+  margin: 0.45rem 0 0;
+  font-family: "Lora", serif;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  text-transform: none;
+  font-size: clamp(1.9rem, 4.1vw, 3rem);
+  font-weight: 600;
+}
+
+.dashboard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.dashboard-chip {
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.48rem 0.86rem;
+  font-size: 0.82rem;
+  font-family: "IBM Plex Mono", monospace;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.dashboard-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 223, 0, 0.78);
+  background: rgba(255, 223, 0, 0.26);
+}
+
+.dashboard-intro {
+  margin-top: 1rem;
+  max-width: 78ch;
+}
+
+.dashboard-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.dashboard-subtitle {
+  margin: 0.55rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.year-control {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  display: grid;
+  grid-template-columns: minmax(52px, auto) 1fr auto auto;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.year-control span {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.year-control strong {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.year-control small {
+  color: var(--ink-3);
+  font-size: 0.72rem;
+}
+
+.year-control input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(136, 157, 92, 0.24);
+  outline: none;
+}
+
+.year-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--flag-yellow);
+  border: 2px solid #f6f2e4;
+  box-shadow: 0 0 0 1px #7f9b46;
+}
+
+.year-control input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--flag-yellow);
+  border: 2px solid #f6f2e4;
+  box-shadow: 0 0 0 1px #7f9b46;
+}
+
+.dash-rule {
+  margin: 1.4rem 0 0.8rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.dash-rule span {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.66rem;
+  color: var(--ink-4);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.dash-rule div {
+  height: 1px;
+  background: var(--border);
+}
+
+.section-grid-two,
+.section-grid-wide {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.section-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.section-grid-wide {
+  grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr);
+}
+
+.kpi-grid-primary,
+.kpi-grid-secondary {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kpi-grid-primary {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.kpi-grid-secondary {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.sector-layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(160px, 1fr);
+  align-items: center;
+  gap: 1rem;
+  min-height: 220px;
+}
+
+.sector-chart {
+  min-height: 220px;
+}
+
+.section-fade {
+  animation: fade-up 520ms ease both;
+}
+
+.kpi-section {
+  margin-top: 0.9rem;
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(248, 245, 232, 0.97));
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  padding: 1.15rem 1.2rem;
+  box-shadow: 0 3px 10px rgba(76, 97, 54, 0.05);
+}
+
+.chart-title {
+  font-family: "Lora", serif;
+  text-transform: none;
+  letter-spacing: -0.005em;
+  color: var(--ink-2);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.chart-sub {
+  color: var(--ink-4);
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 0.74rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+.chart-note {
+  color: var(--ink-3);
+  border-top: 1px solid var(--border-light);
+  font-size: 0.72rem;
+  margin-top: 0.72rem;
+  padding-top: 0.52rem;
+  line-height: 1.5;
+}
+
+.custom-tooltip {
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+  box-shadow: 0 8px 18px rgba(76, 97, 54, 0.1);
+  font-size: 0.73rem;
+  padding: 0.55rem 0.72rem;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: #708058;
+}
+
+.recharts-cartesian-grid line {
+  stroke: rgba(121, 145, 86, 0.16);
+}
+
+.recharts-default-legend {
+  font-size: 0.72rem;
+}
+
+.recharts-surface:focus {
+  outline: none;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1000px) {
+  .section-grid-wide {
+    grid-template-columns: 1fr;
+  }
+
+  .year-control {
+    grid-template-columns: 1fr auto;
+  }
+
+  .year-control span,
+  .year-control input[type="range"] {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .year-control {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .section-grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid-secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .sector-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .sector-chart {
+    min-height: 200px;
+  }
+}

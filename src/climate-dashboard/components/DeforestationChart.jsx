@@ -1,0 +1,84 @@
+import {
+  ComposedChart, Line, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, ResponsiveContainer, ReferenceLine,
+} from 'recharts';
+import { BRAZIL } from '../data/brazil';
+import { C, ChartHeader } from './shared';
+
+function CustomTip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="custom-tooltip">
+      <p style={{ fontWeight: 600, marginBottom: 4 }}>{label}</p>
+      {payload.map(p => (
+        <p key={p.dataKey} style={{ color: p.color, margin: '2px 0' }}>
+          {p.name}: <strong>{p.value.toLocaleString()}{p.name.includes('CO₂') ? ' Mt' : ' km²'}</strong>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+export default function DeforestationChart() {
+  return (
+    <div className="card">
+      <ChartHeader
+        title="Deforestation vs. Total CO₂ — Thesis Chart"
+        sub="MtCO₂ (left axis) · km² deforested (right axis) · 2003–2022 · INPE PRODES"
+      />
+      <ResponsiveContainer width="100%" height={240}>
+        <ComposedChart data={BRAZIL} margin={{ top: 10, right: 48, left: 8, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" vertical={false} />
+          <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#7A746C' }} tickLine={false} axisLine={false} />
+
+          {/* Left axis: CO2 */}
+          <YAxis
+            yAxisId="co2"
+            domain={[330, 580]}
+            tick={{ fontSize: 10, fill: C.brazil }}
+            tickLine={false} axisLine={false}
+            tickFormatter={v => `${v}`}
+            width={34}
+          />
+
+          {/* Right axis: deforestation */}
+          <YAxis
+            yAxisId="def"
+            orientation="right"
+            domain={[3000, 30000]}
+            tick={{ fontSize: 10, fill: C.fossil }}
+            tickLine={false} axisLine={false}
+            tickFormatter={v => v >= 1000 ? `${(v/1000).toFixed(0)}k` : v}
+            width={34}
+          />
+
+          <Tooltip content={<CustomTip />} />
+          <Legend
+            iconType="circle" iconSize={8}
+            wrapperStyle={{ fontSize: '0.72rem', color: 'var(--ink-2)', paddingTop: 8 }}
+          />
+
+          {/* 2012 Forest Code — structural break */}
+          <ReferenceLine yAxisId="co2" x={2012} stroke="#DDD9CF" strokeDasharray="4 3"
+            label={{ value: 'Forest Code', position: 'top', fontSize: 9, fill: '#7A746C', dy: -4 }} />
+
+          <Line
+            yAxisId="co2" type="monotone" dataKey="co2"
+            name="Total CO₂" stroke={C.brazil} strokeWidth={2}
+            dot={false} activeDot={{ r: 3, strokeWidth: 0 }}
+          />
+          <Line
+            yAxisId="def" type="monotone" dataKey="deforestation"
+            name="Deforestation" stroke={C.fossil} strokeWidth={2}
+            strokeDasharray="6 3"
+            dot={false} activeDot={{ r: 3, strokeWidth: 0 }}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+      <p className="chart-note">
+        The 2012 Forest Code reforms correlate with sustained deforestation reduction. The post-2018 resurgence
+        in deforestation tracks closely with rising land-use CO₂. Deforestation data: INPE PRODES; emissions: SEEG Brazil.
+      </p>
+    </div>
+  );
+}
