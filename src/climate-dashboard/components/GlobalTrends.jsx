@@ -5,6 +5,7 @@ import {
 import { BRAZIL } from '../data/brazil';
 import { COMPARISON } from '../data/comparison';
 import { COUNTRY_META, ChartHeader } from './shared';
+import AIExplanation from './AIExplanation';
 
 /* Merge all country data into year-keyed rows for Recharts */
 function buildData() {
@@ -42,13 +43,14 @@ export default function GlobalTrends() {
   const data = buildData();
 
   return (
-    <div className="card">
+    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Per Capita CO₂ — Global Trends"
         sub="tCO₂/person · 2003–2022 · selected countries"
       />
-      <ResponsiveContainer width="100%" height={240}>
-        <LineChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
+      <div style={{ flex: 1, minHeight: 240 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" vertical={false} />
           <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#7A746C' }} tickLine={false} axisLine={false} />
           <YAxis
@@ -75,12 +77,22 @@ export default function GlobalTrends() {
               activeDot={{ r: 3, strokeWidth: 0 }}
             />
           ))}
-        </LineChart>
-      </ResponsiveContainer>
-      <p className="chart-note">
-        The USA has declined sharply while China has nearly doubled. Brazil remains stable and low,
-        a consequence of its renewable-heavy grid and relatively moderate industrial base.
-      </p>
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <AIExplanation
+        staticNote="Compared to major emitters, Brazil’s per-capita emissions remain low and relatively stable over time. While countries like China and India show rising trajectories linked to industrialisation, and the US shows gradual decline, Brazil’s trend is shaped less by energy transitions and more by land-use dynamics. This results in a flatter curve with periodic deviations linked to deforestation cycles."
+        chartTitle="Per Capita CO₂ — Global Trends"
+        chartContext="Per-capita emissions comparison across major economies over 2003-2022"
+         contextMode="trend"
+         seriesData={data}
+        currentData={{
+          Brazil: BRAZIL[BRAZIL.length - 1]?.co2_pc,
+          China: COMPARISON.find(r => r.year === 2022 && r.country === 'China')?.co2_pc,
+          USA: COMPARISON.find(r => r.year === 2022 && r.country === 'United States')?.co2_pc,
+        }}
+        previousData={null}
+      />
     </div>
   );
 }

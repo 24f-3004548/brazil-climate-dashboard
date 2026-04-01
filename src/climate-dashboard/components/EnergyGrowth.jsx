@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import { BRAZIL } from '../data/brazil';
 import { C, ChartHeader } from './shared';
+import AIExplanation from './AIExplanation';
 
 function CustomTip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
@@ -24,13 +25,14 @@ export default function EnergyGrowth() {
   const data = BRAZIL.slice(1);
 
   return (
-    <div className="card" style={{ height: '100%' }}>
+    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Energy Consumption Growth — Year-on-Year %"
         sub="Renewables vs fossil · 2004–2022 · fixed trend"
       />
-      <ResponsiveContainer width="100%" height={220}>
-        <ComposedChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
+      <div style={{ flex: 1, minHeight: 220 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" vertical={false} />
           <XAxis
             dataKey="year"
@@ -65,12 +67,21 @@ export default function EnergyGrowth() {
             stroke={C.fossil} strokeWidth={2}
             dot={false} activeDot={{ r: 3, strokeWidth: 0 }}
           />
-        </ComposedChart>
-      </ResponsiveContainer>
-      <p className="chart-note">
-        The 2015–16 hydro drought forced greater fossil fuel reliance. The 2020 dip reflects
-        COVID-19 demand suppression; fossil consumption rebounded sharply in 2021.
-      </p>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <AIExplanation
+        staticNote="Year-on-year energy trends reflect a system balancing renewables and fossil fuels under changing conditions. Hydropower variability—especially during drought years—can increase reliance on fossil fuels, temporarily raising emissions. At the same time, expansion in wind and solar is gradually reducing carbon intensity, though short-term fluctuations remain driven by climate and demand shocks."
+        chartTitle="Energy Consumption Growth"
+        chartContext="Year-on-year percentage changes in renewable and fossil energy consumption"
+         contextMode="trend"
+         seriesData={data.map((r) => ({ year: r.year, renewables_chg: r.renewables_chg, fossil_chg: r.fossil_chg }))}
+        currentData={{
+          renewables_chg: data[data.length - 1]?.renewables_chg,
+          fossil_chg: data[data.length - 1]?.fossil_chg,
+        }}
+        previousData={null}
+      />
     </div>
   );
 }

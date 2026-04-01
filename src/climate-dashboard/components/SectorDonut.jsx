@@ -1,6 +1,7 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { BRAZIL } from '../data/brazil';
 import { C, ChartHeader } from './shared';
+import AIExplanation from './AIExplanation';
 
 const SECTORS = [
   { key: 'land_use',    label: 'Land-use change', color: C.land_use },
@@ -42,16 +43,25 @@ function SectorLegend({ data }) {
 
 export default function SectorDonut({ year }) {
   const row = BRAZIL.find(r => r.year === year);
+  const prevRow = BRAZIL.find(r => r.year === year - 1);
+  
+  if (!row) {
+    return <div className="card" style={{ height: '100%' }}>Data not found for {year}</div>;
+  }
+  
   const slices = SECTORS.map(s => ({ ...s, value: row[s.key] }));
+  const dominant = slices.reduce((a, b) => (a.value > b.value ? a : b));
+  const dominantLabel = dominant.label.replace(' change', '');
+  const dominantPct = (dominant.value * 100).toFixed(1);
 
   return (
-    <div className="card" style={{ height: '100%' }}>
+    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Emissions by Sector"
         sub={`Share of total CO₂ · ${year} · SEEG Brazil`}
       />
-      <div className="sector-layout">
-        <div className="sector-chart">
+      <div className="sector-layout" style={{ flex: 1 }}>
+        <div className="sector-chart" style={{ position: 'relative' }}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -67,13 +77,47 @@ export default function SectorDonut({ year }) {
               <Tooltip content={<CustomTip />} />
             </PieChart>
           </ResponsiveContainer>
+
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ margin: 0, fontSize: '1.2rem', lineHeight: 1, fontWeight: 700, color: dominant.color, fontFamily: 'IBM Plex Mono, monospace' }}>
+              {dominantPct}%
+            </p>
+            <p style={{ margin: '4px 0 0', fontSize: '0.58rem', lineHeight: 1.2, fontWeight: 550, color: 'var(--ink-3)' }}>
+              Major source - {dominantLabel}
+            </p>
+          </div>
         </div>
         <SectorLegend data={slices} />
       </div>
-      <p className="chart-note">
-        Land-use change—primarily deforestation—dominates Brazil's emission profile, unlike most
-        industrialised economies where energy is the primary source.
-      </p>
+      <AIExplanation
+        staticNote="Brazil’s emissions profile is dominated by land-use change and agriculture, unlike most large economies where energy is the primary source. Deforestation alone contributes a substantial share, followed by livestock and soil emissions. The energy sector plays a comparatively smaller role due to widespread use of renewables, making Brazil structurally different from fossil-fuel-dependent economies."
+        chartTitle="Emissions by Sector"
+        chartContext={`Breakdown of Brazil's CO₂ emissions by sector`}
+        year={year}
+        currentData={{
+          land_use: row.land_use,
+          agriculture: row.agriculture,
+          energy: row.energy,
+          industrial: row.industrial,
+          waste: row.waste,
+        }}
+        previousData={prevRow ? {
+          land_use: prevRow.land_use,
+          agriculture: prevRow.agriculture,
+          energy: prevRow.energy,
+        } : null}
+      />
     </div>
   );
 }

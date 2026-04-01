@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import { BRAZIL } from '../data/brazil';
 import { C, ChartHeader } from './shared';
+import AIExplanation from './AIExplanation';
 
 function CustomTip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
@@ -21,13 +22,14 @@ function CustomTip({ active, payload, label }) {
 
 export default function DeforestationChart() {
   return (
-    <div className="card">
+    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Deforestation vs. Total CO₂ — Thesis Chart"
         sub="MtCO₂ (left axis) · km² deforested (right axis) · 2003–2022 · INPE PRODES"
       />
-      <ResponsiveContainer width="100%" height={240}>
-        <ComposedChart data={BRAZIL} margin={{ top: 10, right: 48, left: 8, bottom: 0 }}>
+      <div style={{ flex: 1, minHeight: 240 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={BRAZIL} margin={{ top: 10, right: 48, left: 8, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" vertical={false} />
           <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#7A746C' }} tickLine={false} axisLine={false} />
 
@@ -73,12 +75,21 @@ export default function DeforestationChart() {
             strokeDasharray="6 3"
             dot={false} activeDot={{ r: 3, strokeWidth: 0 }}
           />
-        </ComposedChart>
-      </ResponsiveContainer>
-      <p className="chart-note">
-        The 2012 Forest Code reforms correlate with sustained deforestation reduction. The post-2018 resurgence
-        in deforestation tracks closely with rising land-use CO₂. Deforestation data: INPE PRODES; emissions: SEEG Brazil.
-      </p>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <AIExplanation
+        staticNote="Brazil’s emissions trajectory is tightly linked to deforestation cycles rather than industrial activity alone. Land-use change—primarily the clearing of forests for agriculture—accounts for a disproportionately large share of emissions, causing national totals to rise and fall with forest policy and enforcement. This makes Brazil’s emissions pattern more volatile and policy-sensitive than fossil-fuel-driven economies."
+        chartTitle="Deforestation vs. Total CO₂"
+        chartContext="Relationship between deforestation and CO₂ emissions in Brazil, showing policy impacts"
+         contextMode="trend"
+         seriesData={BRAZIL.map((r) => ({ year: r.year, co2: r.co2, deforestation: r.deforestation }))}
+        currentData={{
+          co2: BRAZIL[BRAZIL.length - 1]?.co2,
+          deforestation: BRAZIL[BRAZIL.length - 1]?.deforestation,
+        }}
+        previousData={null}
+      />
     </div>
   );
 }

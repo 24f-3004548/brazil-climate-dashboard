@@ -5,6 +5,7 @@ import {
 import { BRAZIL } from '../data/brazil';
 import { COMPARISON } from '../data/comparison';
 import { COUNTRY_META, ChartHeader } from './shared';
+import AIExplanation from './AIExplanation';
 
 function CustomTip({ active, payload }) {
   if (!active || !payload?.length) return null;
@@ -43,13 +44,14 @@ export default function IncomeEmissions({ year }) {
   const brazil = points.filter(p =>  p.isBrazil);
 
   return (
-    <div className="card" style={{ height: '100%' }}>
+    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Income vs. Emissions"
         sub={`GDP PPP p.c. vs CO₂ p.c. · ${year} · 8 countries + world`}
       />
-      <ResponsiveContainer width="100%" height={220}>
-        <ScatterChart margin={{ top: 10, right: 20, left: 10, bottom: 24 }}>
+      <div style={{ flex: 1, minHeight: 220 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ top: 10, right: 20, left: 10, bottom: 24 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" />
           <XAxis
             type="number" dataKey="gdp_pc"
@@ -91,8 +93,9 @@ export default function IncomeEmissions({ year }) {
               </g>
             )}
           />
-        </ScatterChart>
-      </ResponsiveContainer>
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
 
       {/* Compact country colour legend */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 0.8rem', marginTop: '0.3rem' }}>
@@ -104,10 +107,20 @@ export default function IncomeEmissions({ year }) {
         ))}
       </div>
 
-      <p className="chart-note">
-        Brazil sits below the global trend line — relatively low CO₂ per capita for its income level —
-        primarily due to hydroelectric dominance in its electricity mix.
-      </p>
+      <AIExplanation
+        staticNote="Brazil lies below the typical income–emissions curve, indicating lower emissions for its level of economic development. This deviation is driven by a relatively low-carbon energy mix and limited heavy industry compared to high-income economies. However, when land-use emissions are included, this apparent efficiency weakens, highlighting the structural importance of agriculture and deforestation in Brazil’s economy."
+        chartTitle="Income vs. Emissions"
+        chartContext={`Relationship between GDP per capita and CO₂ emissions in ${year}`}
+        year={year}
+        currentData={{
+          gdp_pc: brazilRow.gdp_pc,
+          co2_pc: brazilRow.co2_pc,
+        }}
+        previousData={BRAZIL.find(r => r.year === year - 1) ? {
+          gdp_pc: BRAZIL.find(r => r.year === year - 1)?.gdp_pc,
+          co2_pc: BRAZIL.find(r => r.year === year - 1)?.co2_pc,
+        } : null}
+      />
     </div>
   );
 }

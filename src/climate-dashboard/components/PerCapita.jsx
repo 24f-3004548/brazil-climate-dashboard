@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import { BRAZIL } from '../data/brazil';
 import { C, ChartHeader } from './shared';
+import AIExplanation from './AIExplanation';
 
 function CustomTip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
@@ -16,14 +17,18 @@ function CustomTip({ active, payload, label }) {
 }
 
 export default function PerCapita({ year }) {
+  const row = BRAZIL.find(r => r.year === year);
+  const prevRow = BRAZIL.find(r => r.year === year - 1);
+
   return (
-    <div className="card" style={{ height: '100%' }}>
+    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="CO₂ per Capita"
         sub="tCO₂/person · 2003–2022 · fixed trend"
       />
-      <ResponsiveContainer width="100%" height={210}>
-        <LineChart data={BRAZIL} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
+      <div style={{ flex: 1, minHeight: 210 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={BRAZIL} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" vertical={false} />
           <XAxis dataKey="year" tick={{ fontSize: 10, fill: '#7A746C' }} tickLine={false} axisLine={false} />
           <YAxis
@@ -47,12 +52,23 @@ export default function PerCapita({ year }) {
             }
             activeDot={{ r: 4, strokeWidth: 0 }}
           />
-        </LineChart>
-      </ResponsiveContainer>
-      <p className="chart-note">
-        Per-capita emissions have remained relatively stable (1.9–2.8 t) compared to the rapid growth
-        seen in emerging Asian economies, reflecting Brazil's high renewables share in its electricity mix.
-      </p>
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <AIExplanation
+        staticNote="Brazil’s per-capita emissions remain relatively low and stable compared to major economies, reflecting a structurally cleaner energy system. A large share of electricity comes from renewables, especially hydropower, thus reducing reliance on fossil fuels. However, stability in this metric masks fluctuations driven by land-use change, which can significantly alter total emissions without strongly affecting per-capita energy trends."
+        chartTitle="CO₂ per Capita"
+         chartContext="Brazil's per-capita emissions trend across 2003-2022"
+         contextMode="trend"
+         seriesData={BRAZIL.map((r) => ({ year: r.year, co2_pc: r.co2_pc, gdp_pc: r.gdp_pc }))}
+        currentData={{
+          co2_pc: row?.co2_pc,
+          gdp_pc: row?.gdp_pc,
+        }}
+        previousData={prevRow ? {
+          co2_pc: prevRow.co2_pc,
+        } : null}
+      />
     </div>
   );
 }

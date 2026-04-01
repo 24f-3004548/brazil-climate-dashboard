@@ -11,6 +11,7 @@ import EnergyGrowth from "../climate-dashboard/components/EnergyGrowth";
 import ForestArea from "../climate-dashboard/components/ForestArea";
 import CO2Intensity from "../climate-dashboard/components/CO2Intensity";
 import GlobalTrends from "../climate-dashboard/components/GlobalTrends";
+import GeminiChatFab from "../climate-dashboard/components/GeminiChatFab";
 import "./DashboardPage.css";
 
 const MIN_YEAR = 2003;
@@ -46,10 +47,11 @@ export default function DashboardPage() {
       </header>
 
       <section className="dashboard-intro">
-        <p className="dashboard-kicker">Working paper · 2003 to 2022</p>
+        <p className="dashboard-kicker">Data-driven Dashboard · 2003–2022</p>
         <p className="dashboard-subtitle">
-          Analytical dashboard extracted from your attached project and adapted to the visual system of your Brazil hero experience.
+          A data-driven view of Brazil&apos;s emissions, highlighting the structural role of land-use change alongside a relatively clean energy system.
         </p>
+        <p className="dashboard-focus">Focus: emissions structure, policy alignment, and global context</p>
       </section>
 
       <section className="year-control card">
@@ -99,6 +101,8 @@ export default function DashboardPage() {
         <GlobalTrends />
         <CO2Intensity />
       </section>
+
+      <GeminiChatFab year={year} />
     </main>
   );
 }
