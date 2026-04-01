@@ -38,25 +38,34 @@ export default function AIExplanation({
 
       setIsLoading(true);
       setError(null);
+      setAiNote(null);
 
-      const explanation = await generateChartExplanation({
-        chartTitle,
-        chartContext,
-        year,
-        currentData,
-        previousData,
-        contextMode,
-        seriesData,
-        staticNote,
-      });
+      try {
+        const explanation = await generateChartExplanation({
+          chartTitle,
+          chartContext,
+          year,
+          currentData,
+          previousData,
+          contextMode,
+          seriesData,
+          staticNote,
+        });
 
-      if (isMounted) {
-        if (explanation) {
-          setAiNote(formatAiTextForDisplay(explanation));
-        } else {
-          setError('Could not generate explanation.');
+        if (isMounted) {
+          if (explanation) {
+            setAiNote(formatAiTextForDisplay(explanation));
+          } else {
+            setError('Could not generate explanation.');
+          }
+          setIsLoading(false);
         }
-        setIsLoading(false);
+      } catch (err) {
+        if (isMounted) {
+          setAiNote(null);
+          setError(err?.message || 'Could not generate explanation.');
+          setIsLoading(false);
+        }
       }
     };
 

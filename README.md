@@ -45,26 +45,44 @@ For a detailed guide on using the dashboard, interpreting data, and understandin
 - **On-site Docs** — Navigate to the [Documentation](/docs) page in the dashboard
 - **[Full Documentation PDF](Brazil_Dashboard_Documentation.pdf)** — Download the complete guide
 
-## Gemini API Key Failover
+## Secure AI API Configuration
 
-The app supports multiple Gemini API keys and automatically falls back to the next key when one is rate-limited, quota-limited, or invalid.
+The dashboard now uses a secure server-side flow:
 
-1. Copy `.env.example` to `.env`.
-2. Add your keys in priority order.
+Frontend -> `/api/chat` -> Gemini API
 
-Example:
+This keeps API keys off the client and out of browser-visible bundles.
+
+1. Remove any previously used `VITE_*` AI API key variables from local `.env` and your deployment settings.
+2. Regenerate your AI key if it was ever exposed client-side.
+3. Set the server-side secret:
 
 ```env
-VITE_GEMINI_API_KEY=your_primary_key_here
-VITE_GEMINI_API_KEY_1=your_fallback_key_1
-VITE_GEMINI_API_KEY_2=your_fallback_key_2
-VITE_GEMINI_API_KEY_3=your_fallback_key_3
-VITE_GEMINI_API_KEY_4=your_fallback_key_4
-VITE_GEMINI_API_KEY_5=your_fallback_key_5
-VITE_GEMINI_API_KEY_6=your_fallback_key_6
+GEMINI_API_KEY=your_primary_gemini_key_here
+GEMINI_API_KEY_1=optional_fallback_key_1
+GEMINI_API_KEY_2=optional_fallback_key_2
+GEMINI_API_KEY_3=optional_fallback_key_3
+GEMINI_API_KEY_4=optional_fallback_key_4
+GEMINI_API_KEY_5=optional_fallback_key_5
+GEMINI_API_KEY_6=optional_fallback_key_6
+GEMINI_ACTIVE_KEY_INDEX=0
+GEMINI_ENABLE_KEY_FAILOVER=true
 ```
 
-The client uses keys in this order and stops as soon as a request succeeds.
+4. Deploy with the included serverless function at `api/chat.js`.
+
+Manual rotation behavior:
+- `GEMINI_ACTIVE_KEY_INDEX` picks which configured key starts first (`0` = `GEMINI_API_KEY`, `1` = `GEMINI_API_KEY_1`, etc.).
+- Set `GEMINI_ENABLE_KEY_FAILOVER=false` to force only the active key (fully manual rotation).
+- Keep `GEMINI_ENABLE_KEY_FAILOVER=true` to start from your selected key and fall back to others on transient/upstream key errors.
+
+Optional for custom local setups:
+
+```env
+VITE_CHAT_API_URL=http://localhost:3000/api/chat
+```
+
+`VITE_CHAT_API_URL` is safe because it is only an endpoint URL, not a credential.
 
 ## Project Structure
 
@@ -88,7 +106,7 @@ All climate and emissions data is sourced from publicly available datasets cover
 - **React 18** — UI framework
 - **Vite** — Build tool and dev server
 - **React Router** — Client-side routing
-- **Google Gemini** — AI-powered chat assistance
+- **Google Gemini API** — AI-powered chat assistance via serverless backend
 - **CSS3** — Custom styling with design tokens
 
 ## License

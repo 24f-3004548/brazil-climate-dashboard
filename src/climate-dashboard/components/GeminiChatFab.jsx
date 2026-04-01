@@ -233,10 +233,10 @@ export default function GeminiChatFab({ year }) {
               `Classification: ${intent}\n` +
               'Answer: I could not generate a live response right now.\n' +
               'Key points:\n' +
-              '• Check that at least one VITE_GEMINI_API_KEY value is valid\n' +
-              '• Reload after editing environment variables\n' +
-              '• Check browser console for API errors\n' +
-              'Why it matters: Without a valid API response, the assistant cannot produce tailored explanations.',
+              '• Verify the server-side GEMINI_API_KEY is set in your deployment\n' +
+              '• Confirm the /api/chat endpoint is reachable\n' +
+              '• Check server logs for API errors\n' +
+              'Why it matters: Without a working backend AI route, the assistant cannot produce tailored explanations.',
           },
         ]);
       }
