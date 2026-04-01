@@ -233,7 +233,7 @@ export default function GeminiChatFab({ year }) {
               `Classification: ${intent}\n` +
               'Answer: I could not generate a live response right now.\n' +
               'Key points:\n' +
-              '• Check that VITE_GEMINI_API_KEY is valid\n' +
+              '• Check that at least one VITE_GEMINI_API_KEY value is valid\n' +
               '• Reload after editing environment variables\n' +
               '• Check browser console for API errors\n' +
               'Why it matters: Without a valid API response, the assistant cannot produce tailored explanations.',
@@ -260,10 +260,6 @@ export default function GeminiChatFab({ year }) {
     }
     setIsLoading(false);
     scrollToBottom();
-  };
-
-  const handleSuggestedPrompt = (prompt) => {
-    setInput(prompt);
   };
 
   const handleKeyDown = (event) => {

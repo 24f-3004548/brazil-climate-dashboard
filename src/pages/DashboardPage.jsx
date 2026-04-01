@@ -85,7 +85,7 @@ export default function DashboardPage() {
       </section>
 
       <Rule label="Land use and deforestation" />
-      <section className="section-grid-wide section-fade">
+      <section className="section-grid-two section-fade">
         <DeforestationChart />
         <ForestArea />
       </section>
@@ -93,13 +93,16 @@ export default function DashboardPage() {
       <Rule label="Economy and energy" />
       <section className="section-grid-two section-fade">
         <IncomeEmissions year={year} />
+        <CO2Intensity />
+      </section>
+
+      <section className="section-grid-two section-fade">
         <EnergyGrowth />
       </section>
 
       <Rule label="Global context" />
       <section className="section-grid-wide section-fade">
-        <GlobalTrends />
-        <CO2Intensity />
+        <PerCapita year={year} />
       </section>
 
       <GeminiChatFab year={year} />

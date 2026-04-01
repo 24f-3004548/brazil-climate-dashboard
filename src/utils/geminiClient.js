@@ -2,8 +2,39 @@
  * Gemini 2.5 Flash Lite client for generating AI chart explanations
  */
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
+const API_KEYS = Array.from(
+  new Set(
+    [
+      import.meta.env.VITE_GEMINI_API_KEY,
+      import.meta.env.VITE_GEMINI_API_KEY_1,
+      import.meta.env.VITE_GEMINI_API_KEY_2,
+      import.meta.env.VITE_GEMINI_API_KEY_3,
+      import.meta.env.VITE_GEMINI_API_KEY_4,
+      import.meta.env.VITE_GEMINI_API_KEY_5,
+      import.meta.env.VITE_GEMINI_API_KEY_6,
+    ]
+      .map((key) => (typeof key === 'string' ? key.trim() : ''))
+      .filter(Boolean)
+  )
+);
+let lastSuccessfulKeyIndex = -1;
+
+function isFailoverEligible(status, data) {
+  if ([401, 403, 429].includes(status)) return true;
+
+  const errorStatus = String(data?.error?.status || '').toUpperCase();
+  const message = String(data?.error?.message || '').toUpperCase();
+
+  return (
+    errorStatus.includes('RESOURCE_EXHAUSTED') ||
+    errorStatus.includes('RATE_LIMIT') ||
+    message.includes('RATE LIMIT') ||
+    message.includes('RESOURCE_EXHAUSTED') ||
+    message.includes('QUOTA') ||
+    message.includes('API KEY NOT VALID')
+  );
+}
 
 function toNum(value) {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
@@ -149,39 +180,73 @@ function normalizeDashboardReply(rawText, queryType) {
 }
 
 async function requestGemini(prompt, config = {}) {
-  const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 220,
-        topK: 40,
-        topP: 0.95,
-        ...config,
-      },
-    }),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    console.error('Gemini API error:', response.status, data);
+  if (!API_KEYS.length) {
+    console.warn('Gemini API key not configured.');
     return null;
   }
 
-  if (data.error) {
-    console.error('Gemini API error:', data.error);
+  const startIndex = ((lastSuccessfulKeyIndex + 1) % API_KEYS.length + API_KEYS.length) % API_KEYS.length;
+  const keyOrder = Array.from({ length: API_KEYS.length }, (_, offset) => (startIndex + offset) % API_KEYS.length);
+
+  for (let i = 0; i < keyOrder.length; i += 1) {
+    const keyIndex = keyOrder[i];
+    const apiKey = API_KEYS[keyIndex];
+    const isLastKey = i === keyOrder.length - 1;
+
+    let response;
+    let data;
+
+    try {
+      response = await fetch(`${API_URL}?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 220,
+            topK: 40,
+            topP: 0.95,
+            ...config,
+          },
+        }),
+      });
+    } catch (error) {
+      console.error(`Gemini request failed on key ${keyIndex + 1}:`, error);
+      if (!isLastKey) continue;
+      return null;
+    }
+
+    try {
+      data = await response.json();
+    } catch (error) {
+      console.error(`Gemini response parsing failed on key ${keyIndex + 1}:`, error);
+      if (!isLastKey) continue;
+      return null;
+    }
+
+    if (response.ok && !data?.error) {
+      lastSuccessfulKeyIndex = keyIndex;
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) {
+        console.warn('No Gemini text in response:', data);
+      }
+      return text || null;
+    }
+
+    console.error(`Gemini API error on key ${keyIndex + 1}:`, response.status, data?.error || data);
+
+    const shouldFailover = !isLastKey && isFailoverEligible(response.status, data);
+    if (shouldFailover) {
+      const nextKeyIndex = keyOrder[i + 1];
+      console.warn(`Failing over to Gemini key ${nextKeyIndex + 1}.`);
+      continue;
+    }
+
     return null;
   }
 
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) {
-    console.warn('No Gemini text in response:', data);
-  }
-
-  return text || null;
+  return null;
 }
 
 /**
@@ -207,11 +272,6 @@ export async function generateChartExplanation({
   seriesData,
   staticNote,
 }) {
-  if (!API_KEY) {
-    console.warn('Gemini API key not configured.');
-    return null;
-  }
-
   const isTrend = contextMode === 'trend';
 
   const snapshotData = Object.entries(currentData || {})
@@ -266,11 +326,6 @@ Focus on current-year interpretation with concise context. Avoid repeating the s
  * @returns {Promise<string|null>}
  */
 export async function generateDashboardChatReply({ queryType, userQuery, systemContext = '', history = [] }) {
-  if (!API_KEY) {
-    console.warn('Gemini API key not configured.');
-    return null;
-  }
-
   const typeGuides = {
     TREND: 'Focus on multi-year dynamics, direction, and volatility over time in Brazil\'s emissions or climate.',
     DRIVER: 'Explain what causes or drives the emissions/climate outcome in Brazil. Focus on sector breakdown or root factors.',

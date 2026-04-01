@@ -1,188 +1,187 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./DocsPage.css";
 
-const tocItems = [
-  { id: "objective", label: "Objective" },
-  { id: "framework", label: "Core analytical framework" },
-  { id: "sources", label: "Data sources" },
-  { id: "definitions", label: "Indicator definitions" },
-  { id: "design", label: "Visualization design choices" },
-  { id: "indices", label: "Role of climate indices" },
-  { id: "insights", label: "Key analytical insights" },
-  { id: "interpretation", label: "Interpretation approach" },
-  { id: "limitations", label: "Limitations" },
-  { id: "conclusion", label: "Conclusion" },
-  { id: "interactive", label: "Interactive features" },
-  { id: "build", label: "Implementation and tech stack" },
+const sections = [
+  { id: "overview", label: "Overview" },
+  { id: "quickstart", label: "Quick Start" },
+  { id: "howtoread", label: "How to Read" },
+  { id: "metrics", label: "Key Metrics" },
+  { id: "sources", label: "Data Sources" },
+  { id: "notes", label: "Important Notes" },
+  { id: "interpretation", label: "Interpretation" },
 ];
 
-const snippets = {
-  stack: `Core: React + Vite + React Router
-Charts: Recharts
-Styling: Scoped CSS modules/files per page/component
-Data: Curated static datasets in src/assets/climate-dashboard/data
-Structure: Reusable chart components + shared design tokens/helpers`,
-};
-
 export default function DocsPage() {
+  const [active, setActive] = useState("overview");
+
+  const handleNavClick = (sectionId) => {
+    setActive(sectionId);
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <main className="docs-page">
-      <div className="docs-aura docs-aura-left" />
-      <div className="docs-aura docs-aura-right" />
+      <div className="docs-grain" />
+      <div className="docs-glow docs-glow-left" />
+      <div className="docs-glow docs-glow-right" />
 
       <header className="docs-topbar">
         <div>
-          <p className="docs-kicker">Brazil climate dashboard documentation</p>
-          <h1>Brazil - Climate &amp; Emissions Dashboard</h1>
-          <p className="docs-lead">
-            Analytical documentation outlining conceptual framing, indicator selection, methodological limits,
-            and implementation design.
-          </p>
+          <p className="docs-brand">Dashboard Documentation</p>
+          <h1 className="docs-title">How to Use This Dashboard</h1>
         </div>
         <nav className="docs-nav">
-          <Link to="/" className="docs-link">Home</Link>
-          <Link to="/dashboard" className="docs-link">Dashboard</Link>
+          <Link to="/" className="docs-chip">Home</Link>
+          <Link to="/dashboard" className="docs-chip">Dashboard</Link>
         </nav>
       </header>
 
-      <div className="docs-layout">
-        <aside className="docs-toc">
-          <h2>Contents</h2>
-          <ul>
-            {tocItems.map((item) => (
-              <li key={item.id}>
-                <a href={`#${item.id}`}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
+      <p className="docs-lead">
+        Quick guide to understanding Brazil's emissions, navigating the dashboard, and interpreting the data.
+      </p>
 
-          <div className="docs-meta">
-            <p>Theme</p>
-            <strong>Brazil Flag Palette</strong>
-            <p>Range</p>
-            <strong>2003–2022</strong>
+      <nav className="docs-nav-sections">
+        {sections.map((section) => (
+          <button
+            key={section.id}
+            className={`docs-nav-btn ${active === section.id ? "active" : ""}`}
+            onClick={() => handleNavClick(section.id)}
+          >
+            {section.label}
+          </button>
+        ))}
+        <a href="/Brazil_Dashboard_Documentation.pdf" download className="docs-nav-btn docs-pdf-btn">
+          Download Full Documentation
+        </a>
+      </nav>
+
+      <section className="docs-content">
+        <article className="docs-card" id="overview">
+          <h2>Overview</h2>
+          <p>
+            Brazil's emissions are driven by land-use change and deforestation, not industrial output. This dashboard tracks trends from 2003–2022 and compares Brazil to global peers.
+          </p>
+        </article>
+
+        <article className="docs-card" id="quickstart">
+          <h2>Quick Start</h2>
+          <ol className="docs-steps">
+            <li><strong>Select year</strong> — Use the slider at the top of the dashboard to pick a year (2003–2022).</li>
+            <li><strong>Scan KPI cards</strong> — See total CO₂, per-capita emissions, deforestation, and policy scores.</li>
+            <li><strong>Explore charts</strong> — Examine trends, sector breakdown, and per-capita comparisons.</li>
+            <li><strong>Ask the AI</strong> — Use the "Explain Data" button to ask questions; the assistant will answer based on selected year.</li>
+          </ol>
+        </article>
+
+        <article className="docs-card" id="howtoread">
+          <h2>How to Read</h2>
+          <div className="docs-subsection">
+            <p className="docs-subhead">Updates with year selector</p>
+            <ul className="docs-bullet">
+              <li>KPI cards (CO₂, per capita, deforestation, forest cover)</li>
+              <li>All charts showing selected year</li>
+              <li>AI assistant context includes year-specific data</li>
+            </ul>
           </div>
-        </aside>
+          <div className="docs-subsection">
+            <p className="docs-subhead">Fixed (always shown)</p>
+            <ul className="docs-bullet">
+              <li>Historical trend lines (full 2003–2022 range)</li>
+              <li>Policy index cards (CCPI, CAT)</li>
+            </ul>
+          </div>
+          <div className="docs-subsection">
+            <p className="docs-subhead">AI Assistant</p>
+            <ul className="docs-bullet">
+              <li>Detects your question type: Trend, Driver, Comparison, or Policy</li>
+              <li>Provides answer + key points + why it matters</li>
+              <li>Uses only data relevant to your question</li>
+            </ul>
+          </div>
+        </article>
 
-        <section className="docs-content">
-          <article className="docs-card" id="objective">
-            <h3>1. Objective</h3>
-            <p>
-              To evaluate Brazil&apos;s emissions profile, development trajectory, and climate responsibility
-              through a multi-dimensional indicator framework.
-            </p>
-          </article>
+        <article className="docs-card" id="metrics">
+          <h2>Key Metrics</h2>
+          <div className="docs-metric-list">
+            <div className="metric-item">
+              <strong>Total CO₂</strong>
+              <p>Economy-wide emissions including land-use change.</p>
+            </div>
+            <div className="metric-item">
+              <strong>CO₂ per Capita</strong>
+              <p>Emissions normalized by population for fair country comparison.</p>
+            </div>
+            <div className="metric-item">
+              <strong>Carbon Intensity</strong>
+              <p>Emissions per unit of GDP; economic efficiency metric.</p>
+            </div>
+            <div className="metric-item">
+              <strong>Deforestation</strong>
+              <p>Annual forest loss in km²; primary emissions driver.</p>
+            </div>
+            <div className="metric-item">
+              <strong>Forest Cover</strong>
+              <p>Percentage of national land under forest.</p>
+            </div>
+            <div className="metric-item">
+              <strong>CCPI Score</strong>
+              <p>Global climate policy ranking; Brazil ranks 27 of 63.</p>
+            </div>
+            <div className="metric-item">
+              <strong>CAT Rating</strong>
+              <p>Assesses alignment with Paris Agreement temperature pathways.</p>
+            </div>
+          </div>
+        </article>
 
-          <article className="docs-card" id="framework">
-            <h3>2. Core Analytical Framework</h3>
-            <p>
-              Brazil is conceptualized as a moderate per-capita emitter whose trajectory is materially shaped
-              by land-use dynamics, rather than exclusively by industrial production.
-            </p>
-          </article>
+        <article className="docs-card" id="sources">
+          <h2>Data Sources</h2>
+          <ul className="docs-source-list">
+            <li><strong>OWID (Our World in Data)</strong> — Emissions, per-capita, energy mix</li>
+            <li><strong>World Bank</strong> — GDP, population, forest area</li>
+            <li><strong>INPE PRODES</strong> — Deforestation measurements</li>
+            <li><strong>SEEG (Climate Observatory)</strong> — Sector-level emissions breakdown</li>
+            <li><strong>GCP (Global Carbon Project)</strong> — International benchmarks</li>
+          </ul>
+        </article>
 
-          <article className="docs-card" id="sources">
-            <h3>3. Data Sources</h3>
-            <p>
-              Our World in Data (OWID): emissions, per-capita indicators, and energy composition.
-            </p>
-            <p>World Bank: GDP per capita, population, and forest-area statistics.</p>
-            <p>Global Carbon Project: aggregate emissions benchmarks.</p>
-            <p>INPE PRODES: annual deforestation measurements.</p>
-            <p>Germanwatch: Climate Change Performance Index (CCPI).</p>
-            <p>Climate Action Tracker: policy-alignment assessment.</p>
-          </article>
+        <article className="docs-card" id="notes">
+          <h2>Important Notes</h2>
+          <div className="docs-note-item">
+            <p className="docs-note-title">CO₂ vs CO₂e</p>
+            <p>This dashboard shows CO₂ only. CO₂e (CO₂ equivalent) includes methane and nitrous oxide; it's higher but harder to compare year-to-year.</p>
+          </div>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Deforestation Cycle</p>
+            <p>Deforestation is measured Aug–Jul (Amazon year), not Jan–Dec. This affects year-to-year changes.</p>
+          </div>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Forest Estimates</p>
+            <p>Forest cover is estimated; exact boundaries are hard to pin down from satellite.</p>
+          </div>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Interpolation</p>
+            <p>Some years use interpolated data when official figures are incomplete.</p>
+          </div>
+        </article>
 
-          <article className="docs-card" id="definitions">
-            <h3>4. Indicator Definitions</h3>
-            <p>Total CO2 Emissions: economy-wide emissions inclusive of land-use change.</p>
-            <p>CO2 per Capita: total emissions normalized by population.</p>
-            <p>Carbon Intensity: emissions normalized by gross domestic product.</p>
-            <p>Deforestation: annual net forest-loss proxy.</p>
-            <p>Forest Cover: proportion of national land area under forest.</p>
-            <p>share_global_co2_including_luc: Brazil&apos;s contribution to global CO2 including land-use change.</p>
-            <p>renewables_cons_change_pct: year-on-year percentage variation in renewable-energy consumption.</p>
-          </article>
-
-          <article className="docs-card" id="design">
-            <h3>5. Visualization Design Choices</h3>
-            <p>KPI cards provide high-level annual summaries for rapid cross-period comparison.</p>
-            <p>Time-series charts represent trend direction, structural breaks, and year-to-year volatility.</p>
-            <p>The donut chart emphasizes proportional sector composition rather than absolute magnitude.</p>
-            <p>The scatter plot examines the association between GDP and emissions across countries.</p>
-            <p>Comparative charts situate Brazil within a global peer context.</p>
-          </article>
-
-          <article className="docs-card" id="indices">
-            <h3>6. Role of Climate Indices</h3>
-            <p>CCPI (Germanwatch): evaluates national performance on emissions, energy transition, and policy.</p>
-            <p>CAT: assesses policy alignment with Paris Agreement temperature pathways (2024 assessment cycle).</p>
-          </article>
-
-          <article className="docs-card" id="insights">
-            <h3>7. Key Analytical Insights</h3>
-            <p>Emission variability is strongly associated with land-use change dynamics.</p>
-            <p>GDP expansion does not exhibit a proportional increase in emissions over the period observed.</p>
-            <p>Brazil occupies an intermediate position in cross-country emissions comparisons.</p>
-            <p>Changes in the renewable profile are captured through renewable-consumption growth indicators.</p>
-            <p>Deforestation remains a primary source of temporal fluctuation in aggregate emissions.</p>
-            <p>Carbon intensity demonstrates an improving trajectory over time.</p>
-          </article>
-
-          <article className="docs-card" id="interpretation">
-            <h3>8. Interpretation Approach</h3>
-            <p>
-              Visual outputs are interpreted as an integrated system, linking emissions outcomes to structural
-              drivers, policy context, and development patterns.
-            </p>
-          </article>
-
-          <article className="docs-card" id="limitations">
-            <h3>9. Limitations</h3>
-            <p>Some comparisons are affected by differences between CO2e and CO2 accounting boundaries.</p>
-            <p>Deforestation reporting follows an August-July reference cycle.</p>
-            <p>Forest-cover series is observed through 2020; subsequent values are estimated.</p>
-            <p>Minor cross-source inconsistencies may persist due to methodological heterogeneity.</p>
-            <p>Scatter-plot inputs include interpolation for years with incomplete observations.</p>
-          </article>
-
-          <article className="docs-card" id="conclusion">
-            <h3>10. Conclusion</h3>
-            <p>
-              Brazil&apos;s emissions profile is substantially land-use driven. Although per-capita and intensity
-              indicators suggest moderate responsibility, Brazil&apos;s forest endowment implies a distinctive
-              governance obligation centered on forest stewardship.
-            </p>
-          </article>
-
-          <article className="docs-card" id="interactive">
-            <h3>11. Interactive Features</h3>
-            <p>
-              A year slider supports dynamic exploration across 2003-2022. KPI cards and chart modules update
-              synchronously, enabling temporal comparison of emissions and structural indicators.
-            </p>
-          </article>
-
-          <article className="docs-card" id="build">
-            <h3>12. Implementation and Tech Stack</h3>
-            <p>
-              The dashboard is implemented as a React single-page application, with Vite used for rapid local
-              iteration and optimized production bundling.
-            </p>
-            <p>
-              Client-side routing is managed through React Router. Visualization modules are implemented as
-              reusable components that consume curated datasets from local data assets.
-            </p>
-            <p>
-              Recharts provides the interactive charting layer, while scoped CSS supports maintainable
-              page-level and component-level styling.
-            </p>
-            <pre>
-              <code>{snippets.stack}</code>
-            </pre>
-          </article>
-        </section>
-      </div>
+        <article className="docs-card docs-card-interpretation" id="interpretation">
+          <h2>Interpretation</h2>
+          <div className="docs-insight">
+            <p><strong>Emissions track deforestation.</strong> When forests are cleared, carbon is released. Brazil's emissions spike correlate with deforestation peaks.</p>
+          </div>
+          <div className="docs-insight">
+            <p><strong>Energy is clean.</strong> Brazil's renewable energy (~60% of generation) keeps emissions lower than would be expected from GDP.</p>
+          </div>
+          <div className="docs-insight">
+            <p><strong>Brazil is a moderate emitter.</strong> Per-capita emissions are well below USA (~16 t/person) but above India (~2 t/person).</p>
+          </div>
+          <div className="docs-insight">
+            <p><strong>Policy matters.</strong> CCPI 27/63, CAT "Insufficient" — policy enforcement has lagged promise.</p>
+          </div>
+        </article>
+      </section>
     </main>
   );
 }
