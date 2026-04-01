@@ -146,7 +146,7 @@ let rawX=-2, rawY=0.5;
 let smoothX=-2, smoothY=0.5;
 let prevSX=-2, prevSY=0.5;
 let speed=0, smoothSpeed=0;
-const IDLE_HIDE_DELAY_MS = 1500;
+const IDLE_HIDE_DELAY_MS = 500;
 let lastMoveAt = 0;
 let revealFade = 0;
 
