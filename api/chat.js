@@ -158,6 +158,8 @@ export default async function handler(req, res) {
         return res.status(result.status).json({
           error: lastUpstreamError.message,
           keyUsed: currentKey.name,
+          triedKeys: i + 1,
+          totalKeys: keyOrder.length,
         });
       }
 
@@ -173,7 +175,12 @@ export default async function handler(req, res) {
           continue;
         }
 
-        return res.status(502).json({ error: lastUpstreamError.message, keyUsed: currentKey.name });
+        return res.status(502).json({
+          error: lastUpstreamError.message,
+          keyUsed: currentKey.name,
+          triedKeys: i + 1,
+          totalKeys: keyOrder.length,
+        });
       }
 
       return res.status(200).json({
@@ -193,11 +200,18 @@ export default async function handler(req, res) {
         continue;
       }
 
-      return res.status(500).json({ error: lastUpstreamError.message, keyUsed: currentKey.name });
+      return res.status(500).json({
+        error: lastUpstreamError.message,
+        keyUsed: currentKey.name,
+        triedKeys: i + 1,
+        totalKeys: keyOrder.length,
+      });
     }
   }
 
   return res.status(lastUpstreamError?.status || 500).json({
     error: lastUpstreamError?.message || 'Unable to complete AI request.',
+    triedKeys: keyOrder.length,
+    totalKeys: keyOrder.length,
   });
 }

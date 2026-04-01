@@ -60,17 +60,17 @@ export default function DocsPage() {
         <article className="docs-card" id="overview">
           <h2>Overview</h2>
           <p>
-            Brazil's emissions are driven by land-use change and deforestation, not industrial output. This dashboard tracks trends from 2003–2022 and compares Brazil to global peers.
+            Brazil's emissions are driven by land-use change and deforestation, not industrial output. This dashboard tracks trends from 2003-2022 and compares Brazil with global peers.
           </p>
         </article>
 
         <article className="docs-card" id="quickstart">
           <h2>Quick Start</h2>
           <ol className="docs-steps">
-            <li><strong>Select year</strong> — Use the slider at the top of the dashboard to pick a year (2003–2022).</li>
-            <li><strong>Scan KPI cards</strong> — See total CO₂, per-capita emissions, deforestation, and policy scores.</li>
-            <li><strong>Explore charts</strong> — Examine trends, sector breakdown, and per-capita comparisons.</li>
-            <li><strong>Ask the AI</strong> — Use the "Explain Data" button to ask questions; the assistant will answer based on selected year.</li>
+            <li><strong>Select year:</strong> Use the slider at the top of the dashboard to pick a year (2003-2022).</li>
+            <li><strong>Scan KPI cards:</strong> See total CO₂, per-capita emissions, deforestation, and policy scores.</li>
+            <li><strong>Explore charts:</strong> Examine trends, sector breakdown, and per-capita comparisons.</li>
+            <li><strong>Ask the AI:</strong> Use the "Explain Data" button to ask questions. The assistant answers based on the selected year.</li>
           </ol>
         </article>
 
@@ -80,23 +80,23 @@ export default function DocsPage() {
             <p className="docs-subhead">Updates with year selector</p>
             <ul className="docs-bullet">
               <li>KPI cards (CO₂, per capita, deforestation, forest cover)</li>
-              <li>All charts showing selected year</li>
-              <li>AI assistant context includes year-specific data</li>
+              <li>All charts showing the selected year</li>
+              <li>AI assistant context that includes year-specific data</li>
             </ul>
           </div>
           <div className="docs-subsection">
             <p className="docs-subhead">Fixed (always shown)</p>
             <ul className="docs-bullet">
-              <li>Historical trend lines (full 2003–2022 range)</li>
+              <li>Historical trend lines (full 2003-2022 range)</li>
               <li>Policy index cards (CCPI, CAT)</li>
             </ul>
           </div>
           <div className="docs-subsection">
             <p className="docs-subhead">AI Assistant</p>
             <ul className="docs-bullet">
-              <li>Detects your question type: Trend, Driver, Comparison, or Policy</li>
-              <li>Provides answer + key points + why it matters</li>
-              <li>Uses only data relevant to your question</li>
+              <li>Detects your question type: Trend, Driver, Comparison, or Policy.</li>
+              <li>Provides an answer, key points, and why it matters.</li>
+              <li>Uses only data relevant to your question.</li>
             </ul>
           </div>
         </article>
@@ -138,11 +138,11 @@ export default function DocsPage() {
         <article className="docs-card" id="sources">
           <h2>Data Sources</h2>
           <ul className="docs-source-list">
-            <li><strong>OWID (Our World in Data)</strong> — Emissions, per-capita, energy mix</li>
-            <li><strong>World Bank</strong> — GDP, population, forest area</li>
-            <li><strong>INPE PRODES</strong> — Deforestation measurements</li>
-            <li><strong>SEEG (Climate Observatory)</strong> — Sector-level emissions breakdown</li>
-            <li><strong>GCP (Global Carbon Project)</strong> — International benchmarks</li>
+            <li><strong>OWID (Our World in Data):</strong> Emissions, per-capita, energy mix.</li>
+            <li><strong>World Bank:</strong> GDP, population, forest area.</li>
+            <li><strong>INPE PRODES:</strong> Deforestation measurements.</li>
+            <li><strong>SEEG (Climate Observatory):</strong> Sector-level emissions breakdown.</li>
+            <li><strong>GCP (Global Carbon Project):</strong> International benchmarks.</li>
           </ul>
         </article>
 
@@ -150,11 +150,11 @@ export default function DocsPage() {
           <h2>Important Notes</h2>
           <div className="docs-note-item">
             <p className="docs-note-title">CO₂ vs CO₂e</p>
-            <p>This dashboard shows CO₂ only. CO₂e (CO₂ equivalent) includes methane and nitrous oxide; it's higher but harder to compare year-to-year.</p>
+            <p>This dashboard shows CO₂ only. CO₂e (CO₂ equivalent) includes methane and nitrous oxide. It is higher but harder to compare year to year.</p>
           </div>
           <div className="docs-note-item">
             <p className="docs-note-title">Deforestation Cycle</p>
-            <p>Deforestation is measured Aug–Jul (Amazon year), not Jan–Dec. This affects year-to-year changes.</p>
+            <p>Deforestation is measured from Aug-Jul (Amazon year), not Jan-Dec. This affects year to year changes.</p>
           </div>
           <div className="docs-note-item">
             <p className="docs-note-title">Forest Estimates</p>
@@ -168,17 +168,21 @@ export default function DocsPage() {
 
         <article className="docs-card docs-card-interpretation" id="interpretation">
           <h2>Interpretation</h2>
-          <div className="docs-insight">
-            <p><strong>Emissions track deforestation.</strong> When forests are cleared, carbon is released. Brazil's emissions spike correlate with deforestation peaks.</p>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Emissions Track Deforestation</p>
+            <p>When forests are cleared, carbon is released. Brazil's emission spikes correlate with deforestation peaks.</p>
           </div>
-          <div className="docs-insight">
-            <p><strong>Energy is clean.</strong> Brazil's renewable energy (~60% of generation) keeps emissions lower than would be expected from GDP.</p>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Energy Mix Is Relatively Clean</p>
+            <p>Brazil's renewable energy share (about 60 percent of generation) keeps emissions lower than expected from GDP alone.</p>
           </div>
-          <div className="docs-insight">
-            <p><strong>Brazil is a moderate emitter.</strong> Per-capita emissions are well below USA (~16 t/person) but above India (~2 t/person).</p>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Brazil Is A Mid-Range Emitter</p>
+            <p>Per-capita emissions are well below the United States (about 16 t/person) but above India (about 2 t/person).</p>
           </div>
-          <div className="docs-insight">
-            <p><strong>Policy matters.</strong> CCPI 27/63, CAT "Insufficient" — policy enforcement has lagged promise.</p>
+          <div className="docs-note-item">
+            <p className="docs-note-title">Policy Execution Matters</p>
+            <p>CCPI rank 27 of 63 and CAT rating "Insufficient" indicate that policy enforcement has lagged behind public commitments.</p>
           </div>
         </article>
       </section>

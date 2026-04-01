@@ -180,7 +180,11 @@ async function requestGemini(prompt, config = {}) {
 
   if (!response.ok) {
     const backendError = data?.error || (rawText ? rawText.slice(0, 200) : 'Unknown API error');
-    throw new Error(`Chat API error (${response.status}): ${backendError}`);
+    const keyInfo = data?.keyUsed ? ` [${data.keyUsed}]` : '';
+    const attemptInfo = Number.isFinite(data?.triedKeys) && Number.isFinite(data?.totalKeys)
+      ? ` (${data.triedKeys}/${data.totalKeys} keys attempted)`
+      : '';
+    throw new Error(`Chat API error (${response.status}): ${backendError}${keyInfo}${attemptInfo}`);
   }
 
   const text = typeof data?.reply === 'string' ? data.reply : null;
