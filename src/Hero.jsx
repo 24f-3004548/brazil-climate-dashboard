@@ -141,7 +141,7 @@ const histX = new Array(HIST).fill(-2);
 const histY = new Array(HIST).fill(0.5);
 let histHead = 0;
 
-// ── Mouse ──
+// ── Mouse & Touch ──
 let rawX=-2, rawY=0.5;
 let smoothX=-2, smoothY=0.5;
 let prevSX=-2, prevSY=0.5;
@@ -150,14 +150,30 @@ const IDLE_HIDE_DELAY_MS = 500;
 let lastMoveAt = 0;
 let revealFade = 0;
 
-const onMouseMove=(e)=>{
-  rawX=e.clientX/window.innerWidth;
-  rawY=1-e.clientY/window.innerHeight;
-  lastMoveAt=performance.now();
+const updatePosition = (clientX, clientY) => {
+  rawX = clientX / window.innerWidth;
+  rawY = 1 - clientY / window.innerHeight;
+  lastMoveAt = performance.now();
 };
+
+const onMouseMove=(e)=>{
+  updatePosition(e.clientX, e.clientY);
+};
+
+const onTouchMove=(e)=>{
+  e.preventDefault();
+  if(e.touches.length > 0) {
+    updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+  }
+};
+
 const onMouseLeave=()=>{ lastMoveAt=0; };
+const onTouchEnd=()=>{ lastMoveAt=0; };
+
 document.addEventListener('mousemove',onMouseMove);
 document.addEventListener('mouseleave',onMouseLeave);
+document.addEventListener('touchmove',onTouchMove,{passive:true});
+document.addEventListener('touchend',onTouchEnd);
 
 // ── Cursor canvas ──
 const cursorCvs=document.getElementById('cursor-canvas');
@@ -276,6 +292,8 @@ window.addEventListener('resize',onResize);
       cancelAnimationFrame(rafId);
       document.removeEventListener('mousemove',onMouseMove);
       document.removeEventListener('mouseleave',onMouseLeave);
+      document.removeEventListener('touchmove',onTouchMove);
+      document.removeEventListener('touchend',onTouchEnd);
       window.removeEventListener('resize',onResize);
       mesh.geometry.dispose();
       mesh.material.dispose();
@@ -303,8 +321,9 @@ window.addEventListener('resize',onResize);
         <Link to="/dashboard" className="btn">Dashboard</Link>
       </div>
 
-      <div className="corner-br">
-        22°57′S 43°10′W<br />Rio de Janeiro
+      <div className="corner-br" aria-label="Made by Hriman Saha">
+        <span className="credit-label">Made by:</span>
+        <span className="credit-name">Hriman Saha</span>
       </div>
     </>
   );

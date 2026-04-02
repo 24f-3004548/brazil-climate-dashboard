@@ -1,7 +1,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   body.hero-mode { width: 100%; height: 100%; overflow: hidden; background: #f2efdf; cursor: none; }
-  #webgl-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
-  #cursor-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+  #webgl-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; touch-action: none; }
+  #cursor-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; touch-action: none; }
   .hero-content {
     position: fixed; inset: 0; z-index: 10;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -63,10 +63,28 @@
   }
   .corner-br {
     position: fixed; bottom: 30px; right: 34px; z-index: 10;
-    font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 300;
-    letter-spacing: 0.12em; color: rgba(95,111,45,0.45); text-align: right;
-    pointer-events: none; line-height: 1.9;
+    font-family: 'Outfit', sans-serif;
+    display: inline-flex; flex-direction: column; gap: 1px; align-items: flex-end;
+    text-align: right; pointer-events: none;
     opacity: 0; animation: up 0.8s 1.8s forwards;
+  }
+
+  .credit-label {
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(95,111,45,0.55);
+    line-height: 1.1;
+  }
+
+  .credit-name {
+    font-size: clamp(11px, 0.9vw, 13px);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(95,111,45,0.72);
+    line-height: 1.15;
   }
 
   @media (max-width: 700px) {
@@ -104,7 +122,16 @@
 
   @media (max-width: 560px) {
     .corner-br {
-      display: none;
+      bottom: 12px;
+      right: 12px;
+    }
+
+    .credit-label {
+      font-size: 9px;
+    }
+
+    .credit-name {
+      font-size: 11px;
     }
   }
 
