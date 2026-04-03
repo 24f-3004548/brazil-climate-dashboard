@@ -94,45 +94,46 @@
 }
 
 .docs-title {
-  margin: 0.48rem 0 0;
+  margin: 0.35rem 0 0;
   font-family: "Lora", serif;
-  font-size: clamp(1.95rem, 4.3vw, 3.15rem);
-  line-height: 1.05;
   letter-spacing: -0.01em;
+  line-height: 1.05;
+  text-transform: none;
+  font-size: clamp(1.9rem, 4.1vw, 3rem);
   font-weight: 600;
-  color: var(--ink-2);
 }
 
 .docs-lead {
   position: relative;
   z-index: 2;
-  margin: 1rem 0 0;
-  max-width: 70ch;
-  color: var(--ink-4);
-  line-height: 1.5;
-  font-size: 0.74rem;
+  margin-top: 0.85rem;
+  max-width: 78ch;
+  color: var(--ink-soft);
+  opacity: 0.82;
+  line-height: 1.42;
+  font-size: 0.98rem;
   font-family: "Source Sans 3", sans-serif;
 }
 
 .docs-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.6rem;
 }
 
 .docs-chip {
   text-decoration: none;
   color: var(--ink);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0.5rem 0.9rem;
-  background: rgba(255, 255, 255, 0.9);
+  padding: 0.48rem 0.86rem;
+  font-size: 0.82rem;
   font-family: "IBM Plex Mono", monospace;
   text-transform: none;
   letter-spacing: 0.01em;
-  font-size: 0.78rem;
   white-space: nowrap;
-  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .docs-chip:hover {
@@ -144,52 +145,54 @@
 .docs-nav-sections {
   position: relative;
   z-index: 2;
-  margin: 1.5rem 0 1.8rem;
+  margin: 1.2rem 0 1.5rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
 }
 
 .docs-nav-btn {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(248, 245, 232, 0.97));
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--border);
-  border-radius: 0.4rem;
-  padding: 0.5rem 0.85rem;
-  color: var(--ink-4);
-  font-family: "Source Sans 3", sans-serif;
-  font-size: 0.74rem;
+  border-radius: 999px;
+  padding: 0.48rem 0.86rem;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .docs-nav-btn:hover {
-  border-color: var(--flag-green);
-  color: var(--flag-green);
-  background: rgba(0, 156, 59, 0.08);
+  transform: translateY(-1px);
+  border-color: rgba(255, 223, 0, 0.78);
+  background: rgba(255, 223, 0, 0.26);
 }
 
 .docs-nav-btn.active {
-  background: rgba(0, 156, 59, 0.12);
-  border-color: var(--flag-green);
-  color: var(--flag-green);
-  font-weight: 600;
+  border-color: rgba(255, 223, 0, 0.78);
+  background: rgba(255, 223, 0, 0.26);
+  color: var(--ink);
+  font-weight: 500;
 }
 
 .docs-pdf-btn {
   margin-left: auto;
-  background: linear-gradient(180deg, rgba(0, 156, 59, 0.12), rgba(0, 156, 59, 0.08));
-  border-color: var(--flag-green);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--border);
   color: var(--ink);
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
 }
 
 .docs-pdf-btn:hover {
-  background: rgba(0, 156, 59, 0.18);
-  border-color: white;
+  background: rgba(255, 223, 0, 0.26);
+  border-color: rgba(255, 223, 0, 0.78);
 }
 
 .docs-content {
@@ -220,12 +223,14 @@
 
 .docs-card p {
   margin: 0;
-  color: var(--ink-4);
-  line-height: 1.6;
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  line-height: 1.5;
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
   text-transform: none;
   letter-spacing: 0.01em;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .docs-card-interpretation {
@@ -235,9 +240,9 @@
 .docs-steps {
   margin: 0.6rem 0 0;
   padding-left: 1.3rem;
-  color: var(--ink-4);
-  line-height: 1.6;
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  line-height: 1.5;
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
   list-style: decimal;
 }
@@ -250,10 +255,10 @@
   margin: 0.3rem 0 0;
   padding-left: 1.3rem;
   list-style: disc;
-  color: var(--ink-4);
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .docs-bullet li {
@@ -272,14 +277,12 @@
   margin: 0 0 0.35rem;
   font-weight: 600;
   color: var(--ink-2);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-family: "Source Sans 3", sans-serif;
 }
 
 .docs-metric-list {
-  display: grid;
-  gap: 0.8rem;
-  margin: 0.6rem 0 0;
+  margin: 0;
 }
 
 .metric-item {
@@ -302,10 +305,10 @@
 
 .metric-item p {
   margin: 0.2rem 0 0;
-  color: var(--ink-4);
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
-  line-height: 1.5;
+  line-height: 1.45;
   text-transform: none;
   letter-spacing: 0.01em;
 }
@@ -318,10 +321,10 @@
 
 .docs-source-list li {
   margin: 0.4rem 0;
-  color: var(--ink-4);
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
   position: relative;
   padding-left: 1rem;
 }
@@ -360,10 +363,10 @@
 
 .docs-note-item p {
   margin: 0;
-  color: var(--ink-4);
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
   text-transform: none;
   letter-spacing: 0.01em;
 }
@@ -380,10 +383,10 @@
 
 .docs-insight p {
   margin: 0;
-  color: var(--ink-4);
-  font-size: 0.74rem;
+  color: var(--ink-3);
+  font-size: 0.72rem;
   font-family: "Source Sans 3", sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
   text-transform: none;
   letter-spacing: 0.01em;
 }

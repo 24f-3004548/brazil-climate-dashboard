@@ -3,12 +3,13 @@ import { BRAZIL } from '../data/brazil';
 import AIExplanation from './AIExplanation';
 
 /* ── Trend arrow for data-driven cards ── */
-function Trend({ curr, prev, invert = false }) {
+function Trend({ curr, prev, invert = false, trendText, trendColor }) {
   const up = curr > prev;
   const good = invert ? !up : up;
+  const color = trendColor || (good ? '#2D6A4F' : '#B5282B');
   return (
-    <span style={{ fontSize: '0.66rem', fontWeight: 600, color: good ? '#2D6A4F' : '#B5282B' }}>
-      {up ? '▲' : '▼'} {Math.abs(((curr - prev) / prev) * 100).toFixed(1)}% (YoY)
+    <span style={{ fontSize: '0.66rem', fontWeight: 600, color }}>
+      {up ? '▲' : '▼'} {trendText || `${Math.abs(((curr - prev) / prev) * 100).toFixed(1)}% (YoY)`}
     </span>
   );
 }
@@ -36,7 +37,7 @@ function Icon({ kind }) {
 }
 
 /* ── Standard data KPI ── */
-function KPI({ label, value, unit, micro, curr, prev, invert, icon, series }) {
+function KPI({ label, value, unit, micro, curr, prev, invert, icon, series, trendText, trendColor }) {
   return (
     <div className="card" style={{ padding: '0.95rem 1rem', display: 'flex', flexDirection: 'column', gap: 4 }}>
       <p style={{ fontSize: '0.64rem', color: 'var(--ink-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2, display: 'flex', alignItems: 'center' }}>
@@ -50,7 +51,7 @@ function KPI({ label, value, unit, micro, curr, prev, invert, icon, series }) {
 
       {prev != null && (
         <p style={{ margin: 0, lineHeight: 1 }}>
-          <Trend curr={curr} prev={prev} invert={invert} />
+          <Trend curr={curr} prev={prev} invert={invert} trendText={trendText} trendColor={trendColor} />
         </p>
       )}
 
@@ -69,9 +70,6 @@ function KPI({ label, value, unit, micro, curr, prev, invert, icon, series }) {
         </ResponsiveContainer>
       </div>
 
-      <p style={{ fontSize: '0.63rem', color: 'var(--ink-4)', opacity: 0.62, lineHeight: 1.25, marginTop: 1, marginBottom: 0 }}>
-        {micro}
-      </p>
     </div>
   );
 }
@@ -87,6 +85,15 @@ export default function KPICards({ year }) {
     { label: 'Climate Policy', rating: 'High', rank: 5 },
   ];
   const ratingWidth = { 'Very Low': 24, Low: 40, Medium: 62, High: 82, 'Very High': 96 };
+  const decoupling = Number(d?.decoupling_index ?? 0);
+  const decouplingLabel = decoupling < 0
+    ? 'Strong Decoupling'
+    : decoupling < 0.8
+      ? 'Weak Decoupling'
+      : decoupling <= 1.2
+        ? 'No Decoupling'
+        : 'Negative Decoupling';
+  const decouplingTrendColor = decouplingLabel === 'Strong Decoupling' ? '#2D6A4F' : '#B5282B';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
@@ -97,14 +104,14 @@ export default function KPICards({ year }) {
            micro="Driven largely by land-use change" curr={d.co2} prev={dp?.co2} invert icon="co2" series={spark('co2')} />
         <KPI label="CO₂ per capita" value={d.co2_pc.toFixed(2)} unit="tCO₂/person"
            micro="Low due to renewable-heavy electricity" curr={d.co2_pc} prev={dp?.co2_pc} invert icon="person" series={spark('co2_pc')} />
-        <KPI label="CO₂ intensity" value={(d.co2_gdp * 1000).toFixed(2)} unit="tCO₂/$1 000 GDP"
-           micro="Improving, but land-use not captured" curr={d.co2_gdp} prev={dp?.co2_gdp} invert icon="intensity" series={spark('co2_gdp')} />
         <KPI label="Deforestation" value={d.deforestation.toLocaleString()} unit="km²"
            micro="Primary driver of emissions volatility" curr={d.deforestation} prev={dp?.deforestation} invert icon="deforestation" series={spark('deforestation')} />
         <KPI label="Forest cover" value={d.forest_area.toFixed(1)} unit="% land"
            micro="Declining slowly, high absolute impact" curr={d.forest_area} prev={dp?.forest_area} icon="forest" series={spark('forest_area')} />
         <KPI label="Global CO₂ share" value={d.global_share.toFixed(2)} unit="%"
            micro="Moderate, but land-use amplified" curr={d.global_share} prev={dp?.global_share} invert icon="global" series={spark('global_share')} />
+          <KPI label="Decoupling index" value={decoupling.toFixed(2)} unit="idx"
+            micro={decouplingLabel} curr={decoupling} prev={dp?.decoupling_index} invert icon="intensity" series={spark('decoupling_index')} trendText={decouplingLabel} trendColor={decouplingTrendColor} />
       </div>
 
       <div className="card" style={{ padding: '1.05rem 1.1rem' }}>
@@ -177,6 +184,8 @@ export default function KPICards({ year }) {
             renewable_rating: 'Medium',
             energy_use_rating: 'Medium',
             climate_policy_rating: 'High',
+            decoupling_index: decoupling,
+            decoupling_label: decouplingLabel,
           }}
           previousData={null}
         />

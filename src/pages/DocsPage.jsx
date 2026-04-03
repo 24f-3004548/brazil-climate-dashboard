@@ -104,32 +104,32 @@ export default function DocsPage() {
         <article className="docs-card" id="metrics">
           <h2>Key Metrics</h2>
           <div className="docs-metric-list">
-            <div className="metric-item">
-              <strong>Total CO₂</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">Total CO₂</p>
               <p>Economy-wide emissions including land-use change.</p>
             </div>
-            <div className="metric-item">
-              <strong>CO₂ per Capita</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">CO₂ per Capita</p>
               <p>Emissions normalized by population for fair country comparison.</p>
             </div>
-            <div className="metric-item">
-              <strong>Carbon Intensity</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">Carbon Intensity</p>
               <p>Emissions per unit of GDP; economic efficiency metric.</p>
             </div>
-            <div className="metric-item">
-              <strong>Deforestation</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">Deforestation</p>
               <p>Annual forest loss in km²; primary emissions driver.</p>
             </div>
-            <div className="metric-item">
-              <strong>Forest Cover</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">Forest Cover</p>
               <p>Percentage of national land under forest.</p>
             </div>
-            <div className="metric-item">
-              <strong>CCPI Score</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">CCPI Score</p>
               <p>Global climate policy ranking; Brazil ranks 27 of 63.</p>
             </div>
-            <div className="metric-item">
-              <strong>CAT Rating</strong>
+            <div className="docs-note-item">
+              <p className="docs-note-title">CAT Rating</p>
               <p>Assesses alignment with Paris Agreement temperature pathways.</p>
             </div>
           </div>

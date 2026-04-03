@@ -49,7 +49,11 @@ export default function SectorDonut({ year }) {
     return <div className="card" style={{ height: '100%' }}>Data not found for {year}</div>;
   }
   
-  const slices = SECTORS.map(s => ({ ...s, value: row[s.key] }));
+  const rawSlices = SECTORS.map(s => ({ ...s, value: Number(row[s.key] ?? 0) }));
+  const sectorTotal = rawSlices.reduce((sum, slice) => sum + slice.value, 0);
+  const slices = sectorTotal > 0
+    ? rawSlices.map((slice) => ({ ...slice, value: slice.value / sectorTotal }))
+    : rawSlices;
   const dominant = slices.reduce((a, b) => (a.value > b.value ? a : b));
   const dominantLabel = dominant.label.replace(' change', '');
   const dominantPct = (dominant.value * 100).toFixed(1);

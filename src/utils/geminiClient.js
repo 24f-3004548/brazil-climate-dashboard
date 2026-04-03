@@ -355,6 +355,10 @@ export function detectQueryIntent(query) {
     return 'TREND';
   }
 
+  if (/decoupl|co2\s*\/\s*gdp|carbon\s+intensity|economic\s+growth/.test(q)) {
+    return 'TREND';
+  }
+
   if (/policy|target|alignment|commitment|goal|pathway|1\.5|climate action|ccpi|cat/.test(q)) {
     return 'POLICY';
   }

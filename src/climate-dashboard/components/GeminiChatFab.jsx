@@ -123,9 +123,19 @@ function buildScopedContextPrompt({ year, query, intent }) {
     return `${arrow} ${Math.abs(delta).toFixed(1)}%`;
   };
 
+  const decoupling = Number(current.decoupling_index ?? 0);
+  const decouplingLabel = decoupling < 0
+    ? 'Strong Decoupling'
+    : decoupling < 0.8
+      ? 'Weak Decoupling'
+      : decoupling <= 1.2
+        ? 'No Decoupling'
+        : 'Negative Decoupling';
+
   const baseBlock = `Selected year: ${year}
 - Brazil CO2 per capita: ${current.co2_pc.toFixed(2)} t/person
-- Brazil total CO2: ${current.co2.toFixed(1)} MtCO2 (${yoy('co2')} YoY)`;
+- Brazil total CO2: ${current.co2.toFixed(1)} MtCO2 (${yoy('co2')} YoY)
+- Decoupling index: ${decoupling.toFixed(3)} (${decouplingLabel})`;
 
   const trendBlock = `Trend context (year-over-year)
 - CO2 per capita: ${yoy('co2_pc')}
@@ -148,6 +158,11 @@ ${comparisonRows}`;
 - CCPI 2026: score 58.2, rank 27/63
 - CAT 2024: Insufficient (not aligned with 1.5C pathway)`;
 
+  const decouplingBlock = `Decoupling context
+- Decoupling index (${year}): ${decoupling.toFixed(3)} (${decouplingLabel})
+- Typology rule: <0 Strong; <0.8 Weak; <=1.2 No; >1.2 Negative decoupling
+- Carbon intensity (CO2/GDP): ${current.co2_gdp.toFixed(3)} (${yoy('co2_gdp')} YoY)`;
+
   const blocks = [baseBlock];
 
   if (intent === 'COMPARISON') blocks.push(comparisonBlock);
@@ -158,6 +173,10 @@ ${comparisonRows}`;
   // Add targeted extras only when query hints at them.
   if (/deforest|forest|land\s*-?use/.test(q) && intent !== 'DRIVER') {
     blocks.push(`Land-use context\n- Deforestation: ${current.deforestation.toLocaleString()} km2 (${yoy('deforestation')} YoY)\n- Forest cover: ${current.forest_area.toFixed(2)}% (${yoy('forest_area')} YoY)`);
+  }
+
+  if (/decoupl|co2\s*\/\s*gdp|carbon\s+intensity|economic\s+growth|gdp/.test(q)) {
+    blocks.push(decouplingBlock);
   }
 
   if (/ccpi|cat|policy|target|pathway|commitment/.test(q) && intent !== 'POLICY') {
