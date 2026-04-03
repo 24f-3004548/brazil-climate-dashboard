@@ -14,34 +14,11 @@ function Trend({ curr, prev, invert = false, trendText, trendColor }) {
   );
 }
 
-function Icon({ kind }) {
-  const styles = { width: 11, height: 11, stroke: 'currentColor', fill: 'none', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
-  const common = { display: 'inline-flex', alignItems: 'center', marginRight: 5, color: 'var(--ink-4)' };
-
-  if (kind === 'co2') {
-    return <span style={common}><svg viewBox="0 0 16 16" style={styles}><circle cx="8" cy="8" r="5.2" /><path d="M3.2 8h9.6" /></svg></span>;
-  }
-  if (kind === 'person') {
-    return <span style={common}><svg viewBox="0 0 16 16" style={styles}><circle cx="8" cy="5" r="2.1" /><path d="M3.8 13c.4-2.2 2-3.4 4.2-3.4S11.8 10.8 12.2 13" /></svg></span>;
-  }
-  if (kind === 'intensity') {
-    return <span style={common}><svg viewBox="0 0 16 16" style={styles}><path d="M8.8 1.8 4.9 8h2.4L6.8 14.2l4.3-6.5H8.7z" /></svg></span>;
-  }
-  if (kind === 'deforestation') {
-    return <span style={common}><svg viewBox="0 0 16 16" style={styles}><path d="M8 13V9" /><path d="M8 2.5c2.1 1.2 3.2 2.6 3.2 4.1C11.2 8.3 9.9 9 8 9 6.1 9 4.8 8.3 4.8 6.6 4.8 5.1 5.9 3.7 8 2.5z" /></svg></span>;
-  }
-  if (kind === 'forest') {
-    return <span style={common}><svg viewBox="0 0 16 16" style={styles}><path d="M8 13V9.2" /><path d="M8 2.2 3.6 8h8.8z" /><path d="M8 5.2 5.2 8.8h5.6z" /></svg></span>;
-  }
-  return <span style={common}><svg viewBox="0 0 16 16" style={styles}><path d="M2.5 8h11" /><path d="M8 2.5a5.5 5.5 0 1 0 0 11" /></svg></span>;
-}
-
 /* ── Standard data KPI ── */
-function KPI({ label, value, unit, micro, curr, prev, invert, icon, series, trendText, trendColor }) {
+function KPI({ label, value, unit, curr, prev, invert, series, trendText, trendColor }) {
   return (
     <div className="card" style={{ padding: '0.95rem 1rem', display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <p style={{ fontSize: '0.64rem', color: 'var(--ink-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2, display: 'flex', alignItems: 'center' }}>
-        <Icon kind={icon} />
+      <p style={{ fontSize: '0.64rem', color: 'var(--ink-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>
         {label}
       </p>
       <p style={{ fontSize: '1.35rem', fontWeight: 650, fontFamily: 'IBM Plex Mono, monospace', color: 'var(--ink)', lineHeight: 1.05, margin: 0 }}>
@@ -101,17 +78,17 @@ export default function KPICards({ year }) {
       {/* Row 1: data-driven metrics — year-reactive */}
       <div className="kpi-grid-primary">
         <KPI label="Total CO₂" value={d.co2.toFixed(0)} unit="MtCO₂"
-           micro="Driven largely by land-use change" curr={d.co2} prev={dp?.co2} invert icon="co2" series={spark('co2')} />
+          curr={d.co2} prev={dp?.co2} invert series={spark('co2')} />
         <KPI label="CO₂ per capita" value={d.co2_pc.toFixed(2)} unit="tCO₂/person"
-           micro="Low due to renewable-heavy electricity" curr={d.co2_pc} prev={dp?.co2_pc} invert icon="person" series={spark('co2_pc')} />
+          curr={d.co2_pc} prev={dp?.co2_pc} invert series={spark('co2_pc')} />
         <KPI label="Deforestation" value={d.deforestation.toLocaleString()} unit="km²"
-           micro="Primary driver of emissions volatility" curr={d.deforestation} prev={dp?.deforestation} invert icon="deforestation" series={spark('deforestation')} />
+          curr={d.deforestation} prev={dp?.deforestation} invert series={spark('deforestation')} />
         <KPI label="Forest cover" value={d.forest_area.toFixed(1)} unit="% land"
-           micro="Declining slowly, high absolute impact" curr={d.forest_area} prev={dp?.forest_area} icon="forest" series={spark('forest_area')} />
+          curr={d.forest_area} prev={dp?.forest_area} series={spark('forest_area')} />
         <KPI label="Global CO₂ share" value={d.global_share.toFixed(2)} unit="%"
-           micro="Moderate, but land-use amplified" curr={d.global_share} prev={dp?.global_share} invert icon="global" series={spark('global_share')} />
+          curr={d.global_share} prev={dp?.global_share} invert series={spark('global_share')} />
           <KPI label="Decoupling index" value={decoupling.toFixed(2)} unit="idx"
-            micro={decouplingLabel} curr={decoupling} prev={dp?.decoupling_index} invert icon="intensity" series={spark('decoupling_index')} trendText={decouplingLabel} trendColor={decouplingTrendColor} />
+          curr={decoupling} prev={dp?.decoupling_index} invert series={spark('decoupling_index')} trendText={decouplingLabel} trendColor={decouplingTrendColor} />
       </div>
 
       <div className="card" style={{ padding: '1.05rem 1.1rem' }}>
@@ -157,17 +134,6 @@ export default function KPICards({ year }) {
               ))}
             </div>
 
-            <p style={{ margin: '7px 0 0', fontSize: '0.56rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--ink-4)' }}>
-              Global Target Alignment
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 4, marginTop: 4 }}>
-              {['Compatible', 'Almost', 'Insufficient', 'Highly', 'Critical'].map((step) => (
-                <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
-                  <span style={{ width: '100%', height: 5, borderRadius: 999, background: step === 'Insufficient' ? 'rgba(181,40,43,0.78)' : 'rgba(120,120,120,0.28)' }} />
-                  <span style={{ fontSize: '0.5rem', color: 'var(--ink-4)', lineHeight: 1.1 }}>{step}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 

@@ -10,7 +10,6 @@ import IncomeEmissions from "../climate-dashboard/components/IncomeEmissions";
 import EnergyGrowth from "../climate-dashboard/components/EnergyGrowth";
 import ForestArea from "../climate-dashboard/components/ForestArea";
 import CO2Intensity from "../climate-dashboard/components/CO2Intensity";
-import GlobalTrends from "../climate-dashboard/components/GlobalTrends";
 import GeminiChatFab from "../climate-dashboard/components/GeminiChatFab";
 import "./DashboardPage.css";
 
@@ -98,11 +97,6 @@ export default function DashboardPage() {
 
       <section className="section-grid-two section-fade">
         <EnergyGrowth />
-      </section>
-
-      <Rule label="Global context" />
-      <section className="section-grid-wide section-fade">
-        <PerCapita year={year} />
       </section>
 
       <GeminiChatFab year={year} />
