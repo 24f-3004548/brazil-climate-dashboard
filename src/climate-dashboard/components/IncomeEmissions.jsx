@@ -28,7 +28,7 @@ export default function IncomeEmissions({ year }) {
     { name: 'Brazil', gdp_pc: brazilRow.gdp_pc, co2_pc: brazilRow.co2_pc, year, isBrazil: true,
       color: COUNTRY_META['Brazil']?.color },
     ...COMPARISON
-      .filter(r => r.year === year && r.country !== 'World')
+      .filter(r => r.year === year)
       .map(r => ({
         name: COUNTRY_META[r.country]?.label ?? r.country,
         gdp_pc: r.gdp_pc,
@@ -98,8 +98,8 @@ export default function IncomeEmissions({ year }) {
       </div>
 
       {/* Compact country colour legend */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 0.8rem', marginTop: '0.3rem' }}>
-        {peers.map(p => (
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.4rem 0.8rem', marginTop: '0.3rem' }}>
+        {[...points].sort((a, b) => a.name.localeCompare(b.name)).map(p => (
           <span key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.68rem', color: 'var(--ink-3)' }}>
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: p.color, display: 'inline-block' }} />
             {p.name}
