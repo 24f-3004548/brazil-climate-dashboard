@@ -47,7 +47,7 @@ export default function IncomeEmissions({ year }) {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Income vs. Emissions"
-        sub={`GDP PPP p.c. vs CO₂ p.c. · ${year} · 8 countries + world`}
+        sub={`Int$ vs tCO₂/person · ${year} · Our World in Data`}
       />
       <div style={{ flex: 1, minHeight: 220 }}>
         <ResponsiveContainer width="100%" height="100%">

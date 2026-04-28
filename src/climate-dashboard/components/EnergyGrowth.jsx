@@ -28,7 +28,7 @@ export default function EnergyGrowth() {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Energy Consumption Growth — Year-on-Year %"
-        sub="Renewables vs fossil · 2004–2022 · fixed trend"
+        sub="% change · 2004–2022 · Our World in Data"
       />
       <div style={{ flex: 1, minHeight: 220 }}>
         <ResponsiveContainer width="100%" height="100%">

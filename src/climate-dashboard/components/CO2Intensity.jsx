@@ -21,7 +21,7 @@ export default function CO2Intensity() {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Carbon Intensity of GDP"
-        sub="tCO₂ per $1 000 GDP (PPP) · 2003–2022"
+        sub="tCO₂ per $1k GDP · 2003–2022 · Our World in Data"
       />
       <div style={{ flex: 1, minHeight: 170 }}>
         <ResponsiveContainer width="100%" height="100%">

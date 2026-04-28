@@ -25,7 +25,7 @@ export default function DeforestationChart() {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Deforestation vs. Total CO₂ — Thesis Chart"
-        sub="MtCO₂ (left axis) · km² deforested (right axis) · 2003–2022 · INPE PRODES"
+        sub="MtCO₂ & km² · 2003–2022 · INPE PRODES"
       />
       <div style={{ flex: 1, minHeight: 240 }}>
         <ResponsiveContainer width="100%" height="100%">

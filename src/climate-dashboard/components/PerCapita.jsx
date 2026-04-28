@@ -24,7 +24,7 @@ export default function PerCapita({ year }) {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="CO₂ per Capita"
-        sub="tCO₂/person · 2003–2022 · fixed trend"
+        sub="tCO₂/person · 2003–2022 · Our World in Data"
       />
       <div style={{ flex: 1, minHeight: 210 }}>
         <ResponsiveContainer width="100%" height="100%">

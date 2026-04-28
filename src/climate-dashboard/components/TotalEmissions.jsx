@@ -28,7 +28,7 @@ export default function TotalEmissions() {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Total CO₂ Emissions"
-        sub="MtCO₂e · 2003–2022 · incl. land-use change"
+        sub="MtCO₂e · 2003–2022 · Our World in Data"
       />
       <div style={{ flex: 1, minHeight: 220 }}>
         <ResponsiveContainer width="100%" height="100%">

@@ -46,7 +46,7 @@ export default function GlobalTrends() {
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ChartHeader
         title="Per Capita CO₂ — Global Trends"
-        sub="tCO₂/person · 2003–2022 · selected countries"
+        sub="tCO₂/person · 2003–2022 · Our World in Data"
       />
       <div style={{ flex: 1, minHeight: 240 }}>
         <ResponsiveContainer width="100%" height="100%">
